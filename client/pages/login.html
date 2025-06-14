@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teams and Players Login Form | CodingNepal</title>
+  <link rel="stylesheet" href="../css/login.css">
+  <link rel="icon" type="image/x-icon" href="../images/siteicon.jpg">
+</head>
+<body>
+  <div class="wrapper">
+    <form>
+      <h2>Login</h2>
+      <label for="email">Email: </label>
+      <input type="email" id="email" name="email" >
+      <div id="emailError" class="error"></div>
+
+      <label for="password">Password: </label>
+      <input type="password" id="password" name="password" >
+      <div id="passwordError" class="error"></div>
+      <div class="forget">
+        <label for="remember">
+          <input type="checkbox" id="remember">
+          <p>Remember me</p>
+        </label>
+        <a href="#">Forgot password?</a>
+      </div>
+      <button type="submit">Log In</button>
+      <div class="register">
+        <p>Don't have an account? <a href=./signUp>Sign up!</a></p>
+      </div>
+      <script src="../js/login.js"></script>
+    </form>
+  </div>
+</body>
+</html>
