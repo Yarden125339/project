@@ -9,12 +9,42 @@
 </head>
 <body>
     <nav class="navbar">
+        <div class="nav-left">
+            <span id="greeting" style="display: none;">Hello, </span>
+        </div>
         <ul class="nav-links">
             <li><a href=/index>Home</a></li>
-            <li><a href=/TeamBuilder>Team Builder</a></li>
-            <li><a href=/login>Login</a></li>
+            <li><a href=/TeamBuilder style="display: none;" id="TeamBuilderLink">Team Builder</a></li>
+            <li><a href=/login id="LoginLink" >Login</a></li>
+            <li><a href="" style="display: none;" id="LogoutLink" >Logout</a></li>
         </ul>
+        <script>
+            const userId = localStorage.getItem('userId');
+            const username = localStorage.getItem('userName') || 'Guest'; // Default to 'Guest' if no username is set
+        
+            function update () {
+                if (userId) {
+                    document.getElementById('LoginLink').style.display = 'none';
+                    document.getElementById('LogoutLink').style.display = 'block';
+                    document.getElementById('TeamBuilderLink').style.display = 'block';
+                    document.getElementById('greeting').style = 'display: block;';
+                    document.getElementById('greeting').innerText = `Hello, ${username}`;
+                } else {
+                    document.getElementById('LoginLink').style.display = 'block';
+                    document.getElementById('LogoutLink').style.display = 'none';
+                    document.getElementById('TeamBuilderLink').style.display = 'none';
+                    document.getElementById('greeting').style = 'display: none;';
+                }
+            };
+            update(); // Initial update based on userId
+            document.getElementById('LogoutLink').onclick = () => {
+                localStorage.removeItem("userId");
+                window.location.href = "/login"; // Redirect after logout
+                update(S);
+            }
+        </script>
     </nav>
+
 
     <header class="hero">
         <img src="../images/LoL esports image.jpg" alt="LoL Esports" class="hero-img">

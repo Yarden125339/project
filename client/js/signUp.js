@@ -66,13 +66,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         const result = await response.json();
   
         if (response.ok) {
-          alert("Signup successful!");
+          localStorage.setItem("userId", result.userId);
+          localStorage.setItem("userName", result.username);
+          window.location.href = "/";
         } else {
-          alert(`Signup failed: ${result.error}`);
+          console.error(`Signup failed: ${result.error}`);
         }
       } catch (error) {
         console.error("Error during signup:", error);
-        alert("An error occurred. Please try again later.");
       }
     });
 

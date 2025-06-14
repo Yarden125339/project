@@ -1,42 +1,45 @@
+
 const express = require('express');
-const db = require('../db');
+const db = require('../db'); // MySQL connection
 const router = express.Router();
 
-// קבלת פריטים לפי משתמש
-router.get('/:userId', (req, res) => {
-  const sql = 'SELECT * FROM list_items WHERE user_id = ?';
-  db.query(sql, [req.params.userId], (err, results) => {
-    if (err) return res.status(500).json({ error: 'שגיאה בשליפה' });
-    res.json(results);
-  });
+// Get all teams
+router.get('/', (req, res) => {
+    db.query('SELECT * FROM teams', (err, results) => {
+        if (err) return res.status(500).json({ error: 'Error fetching teams' });
+        res.json(results);
+    });
 });
 
-// הוספה
+// Add a new team
 router.post('/', (req, res) => {
-  const { text, user_id } = req.body;
-  const sql = 'INSERT INTO list_items (text, user_id) VALUES (?, ?)';
-  db.query(sql, [text, user_id], (err, result) => {
-    if (err) return res.status(500).json({ error: 'שגיאה בהוספה' });
-    res.json({ message: 'נוסף בהצלחה', id: result.insertId });
-  });
+    const { name, userId } = req.body;
+    console.log("User ID:", userId); // Debugging line to check userId
+    db.query('INSERT INTO teams (name, user_id) VALUES (?, ?)', [name, userId], (err, result) => {
+        if (err) {
+          console.error('Error inserting team:', err);
+          return res.status(500).json({ error: 'Error adding team' });
+        }
+        res.json({ message: 'Team added successfully', id: result.insertId });
+    });
 });
 
-// עריכה
-router.put('/:id', (req, res) => {
-  const { text } = req.body;
-  const sql = 'UPDATE list_items SET text = ? WHERE id = ?';
-  db.query(sql, [text, req.params.id], (err) => {
-    if (err) return res.status(500).json({ error: 'שגיאה בעדכון' });
-    res.json({ message: 'עודכן בהצלחה' });
-  });
-});
-
-// מחיקה
+// Delete a team
 router.delete('/:id', (req, res) => {
-  const sql = 'DELETE FROM list_items WHERE id = ?';
-  db.query(sql, [req.params.id], (err) => {
-    if (err) return res.status(500).json({ error: 'שגיאה במחיקה' });
-    res.json({ message: 'נמחק בהצלחה' });
+    db.query('DELETE FROM teams WHERE id = ?', [req.params.id], (err) => {
+        if (err) return res.status(500).json({ error: 'Error deleting team' });
+        res.json({ message: 'Team deleted successfully' });
+    });
+});
+
+router.put('/:id', (req, res) => {
+  const { field, value } = req.body;
+  if (!['name', 'top', 'jungle', 'mid', 'bottom', 'support'].includes(field)) {
+      return res.status(400).json({ error: 'Invalid field' });
+  }
+  db.query(`UPDATE teams SET ${field} = ? WHERE id = ?`, [value, req.params.id], (err) => {
+      if (err) return res.status(500).json({ error: 'Error updating team' });
+      res.json({ message: 'Team updated successfully' });
   });
 });
 

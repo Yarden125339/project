@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/users', userRoutes);
-app.use('/api/list', listRoutes); 
+app.use('/api/teams', listRoutes); 
 
 app.use(express.static(clientPath));
 
